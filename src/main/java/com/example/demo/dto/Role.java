@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public enum Role {
     USER(Authority.READ),
     ADMIN(Authority.READ, Authority.WRITE),
-    BLOCKED();
+    BLOCKED(Authority.NON);
 
     private final Set<Authority> authorities;
 

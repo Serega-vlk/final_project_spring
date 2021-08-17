@@ -7,7 +7,9 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Getter
@@ -29,9 +31,10 @@ public class User {
     @NotEmpty(message = "логин не может быть пустым")
     @Column(nullable = false)
     private String login;
+    @Min(value = 0)
+    private Integer money;
     @NotEmpty(message = "пароль не может быть пустым")
     @Column(nullable = false)
-    //@Size(min = 5, max = 15, message = "пароль должен содержать от 5 до 15 символов")
     private String password;
     @Enumerated(value = EnumType.STRING)
     @ColumnDefault(value = "USER")
@@ -50,11 +53,12 @@ public class User {
 //        services.add(service);
 //    }
 
-    public User(String name, String email, String password, String login){
+    public User(String name, String email, String password, String login, int money){
         this.email = email;
         this.name = name;
         this.password = password;
         this.login = login;
+        this.money = money;
         this.role = Role.USER;
     }
 }

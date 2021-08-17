@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Баланс</title>
+    <a style="margin-left:50px" href="/user/logout">Выход</a>
+    <a style="margin-left:70px" href="/user/change">Сменить пароль</a>
+    <a style="margin-left:500px" href="/user">Личный кабинет</a>
+</head>
+<body>
+<hr/>
+<p style="text-align:center"><span style="font-size:26px"><span style="font-family:Comic Sans MS,cursive">Ваш баланс: </span></span></p>
+<p style="text-align:center"><span style="font-size:26px"><span style="font-family:Comic Sans MS,cursive" th:text="${userMoney}">value</span></span></p>
+<form style="text-align:center" method="post" action="/user/balance" th:object="${moneys}">
+    <label for="moneyToAdd">Пополнить на:</label>
+    <input type="text" name="moneyToAdd" th:field="*{moneyToAdd}" id="moneyToAdd">
+    <div style="color:red" th:if="${#fields.hasErrors('moneyToAdd')}" th:errors="*{moneyToAdd}">Name Error</div>
+    <input type="submit" value="Пополнить">
+</form>
+</body>
+</html>

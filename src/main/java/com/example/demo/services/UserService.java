@@ -2,7 +2,6 @@ package com.example.demo.services;
 
 import com.example.demo.dto.Role;
 import com.example.demo.entity.User;
-import com.example.demo.repositories.ServiceRepositories;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,5 +76,21 @@ public class UserService {
 
     public boolean hasEmail(String email){
         return uRepo.findByEmail(email).isPresent();
+    }
+
+    @Transactional
+    public User addMoneyByUsername(String username, int money){
+        User user = getUserByUsername(username).orElseThrow(RuntimeException::new);
+        int userMoney = user.getMoney();
+        user.setMoney(userMoney + money);
+        return uRepo.save(user);
+    }
+
+    public User checkMoneyAndUnblockUserByUsername(String username, int minMoney){
+        User user = getUserByUsername(username).orElseThrow(RuntimeException::new);
+        if (user.getMoney() >= minMoney){
+            user.setRole(Role.USER);
+        }
+        return uRepo.save(user);
     }
 }

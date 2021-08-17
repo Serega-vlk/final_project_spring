@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>be1.ru</title>
-    <form style="margin-left:50px" method="post" action="/user/logout">
-        <button type="submit">Выйти</button>
-    </form>
-    <form style="margin-left:70px" method="get" action="/user/change">
-        <button type="submit">Сменить пароль</button>
-    </form>
+    <title>Админ</title>
+    <a style="margin-left:50px" href="/user/logout">Выход</a>
+    <a style="margin-left:70px" href="/user/change">Сменить пароль</a>
 </head>
 <body>
 <hr />
@@ -69,6 +65,10 @@
         <td th:text="${service.getName()}"/>
         <td th:text="${service.getPrice()}"/>
 </table>
+<a>Сортировка по:</a>
+<a style="margin-left:50px" href="/user/admin?sort=id">Id</a>
+<a style="margin-left:60px" href="/user/admin?sort=name">Название</a>
+<a style="margin-left:70px" href="/user/admin?sort=price">Цена</a>
 
 <p>&nbsp;</p>
 </body>

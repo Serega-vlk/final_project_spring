@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user/admin")
@@ -30,10 +31,11 @@ public class AdminController {
     }
 
     @GetMapping
-    public String adminPage(Model model, Principal principal){
+    public String adminPage(Model model, Principal principal,
+                            @RequestParam(name = "sort", required = false) Optional<String> sort){
         User user = userService.getUserByUsername(principal.getName()).orElseThrow(RuntimeException::new);
         model.addAttribute("username", user.getName());
-        model.addAttribute("services", servicesService.getALlServices());
+        model.addAttribute("services", servicesService.getAllSorted(sort.orElse("default")));
         model.addAttribute("users", userService.getAllUsers());
         return "admin";
     }
@@ -64,6 +66,7 @@ public class AdminController {
         }
         user.setRole(Role.USER);
         user.setPassword(encoder.encode(user.getPassword()));
+        user.setMoney(0);
         userService.saveUser(user);
         return "redirect:/user/admin";
     }

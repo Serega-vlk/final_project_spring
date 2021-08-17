@@ -1,18 +1,17 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-	<title>be1.ru</title>
-	<form style="margin-left:50px" method="post" action="/user/logout">
-		<button type="submit">Выйти</button>
-	</form>
-	<form style="margin-left:70px" method="get" action="/user/change">
-		<button type="submit">Сменить пароль</button>
-	</form>
+	<title>Пользователь</title>
+	<a style="margin-left:50px" href="/user/logout">Выход</a>
+	<a style="margin-left:70px" href="/user/change">Сменить пароль</a>
+	<a style="margin-left:500px" href="/user/balance">Баланс</a>
+	<br/>
+	<a style="margin-left:800px" th:text="${user.getMoney()}">value</a>
 </head>
 <body>
 <hr />
 <a><span style="font-family:Comic Sans MS,cursive" >Здраствуйте, </span></a>
-<a><span style="font-family:Comic Sans MS,cursive" th:text="${username}">text</span></a>
+<a><span style="font-family:Comic Sans MS,cursive" th:text="${user.getName()}">text</span></a>
 
 <br/>
 <br/>
@@ -47,6 +46,10 @@
 		<td th:text="${service.getPrice()}"/>
 	<tbody/>
 </table>
+<a>Сортировка по:</a>
+<a style="margin-left:50px" href="/user?sort=id">Id</a>
+<a style="margin-left:60px" href="/user?sort=name">Название</a>
+<a style="margin-left:70px" href="/user?sort=price">Цена</a>
 
 <p>&nbsp;</p>
 </body>
