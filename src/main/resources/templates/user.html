@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>кабинет</title>
+	<title>be1.ru</title>
+	<form style="margin-left:50px" method="post" action="/user/logout">
+		<button type="submit">Выйти</button>
+	</form>
+	<form style="margin-left:70px" method="get" action="/user/change">
+		<button type="submit">Сменить пароль</button>
+	</form>
 </head>
 <body>
+<hr />
+<a><span style="font-family:Comic Sans MS,cursive" >Здраствуйте, </span></a>
+<a><span style="font-family:Comic Sans MS,cursive" th:text="${username}">text</span></a>
 
+<br/>
+<br/>
+<br/>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px">
+	<caption>Подключенные услуги</caption>
+	<thead>
+	<th>ID</th>
+	<th>Название</th>
+	<th>Цена</th>
+	</thead>
+	<tbody >
+		<td text="Здесь">
+		<td text="Будут">
+		<td text="Услуги">
+	<tbody/>
+</table>
+
+<p>&nbsp; &nbsp;&nbsp;</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px">
+	<caption>Все услуги</caption>
+	<thead>
+	<th>ID</th>
+	<th>Название</th>
+	<th>Цена</th>
+	</thead>
+	<tbody th:each="service : ${services}">
+		<td th:text="${service.getId()}"/>
+		<td th:text="${service.getName()}"/>
+		<td th:text="${service.getPrice()}"/>
+	<tbody/>
+</table>
+
+<p>&nbsp;</p>
 </body>
 </html>

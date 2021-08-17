@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 
 import com.example.demo.dto.Role;
-import com.example.demo.dto.Status;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -37,11 +36,19 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     @ColumnDefault(value = "USER")
     private Role role;
-    @Enumerated(value = EnumType.STRING)
-    @ColumnDefault(value = "ACTIVE")
-    private Status status;
     @Transient
     private String repeatPass;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "user_service",
+//            joinColumns = {@JoinColumn(name = "user_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "service_id")}
+//    )
+//    private List<Service> services;
+
+//    public void addService(Service service){
+//        services.add(service);
+//    }
 
     public User(String name, String email, String password, String login){
         this.email = email;
@@ -49,6 +56,5 @@ public class User {
         this.password = password;
         this.login = login;
         this.role = Role.USER;
-        this.status = Status.ACTIVE;
     }
 }

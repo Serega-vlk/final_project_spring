@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>be1.ru</title>
+    <form style="margin-left:50px" method="post" action="/user/logout">
+        <button type="submit">Выйти</button>
+    </form>
+    <form style="margin-left:70px" method="get" action="/user/change">
+        <button type="submit">Сменить пароль</button>
+    </form>
+</head>
+<body>
+<hr />
+<a><span style="font-family:Comic Sans MS,cursive" >Здраствуйте, </span></a>
+<a><span style="font-family:Comic Sans MS,cursive" th:text="${username}">text</span></a>
+<a><span style="font-family:Comic Sans MS,cursive" > (Админ)</span></a>
+
+<br/>
+<br/>
+<br/>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px">
+    <caption>Все пользователи</caption>
+    <thead>
+    <th >ID</th>
+    <th >Имя</th>
+    <th >Логин</th>
+    <th >Email</th>
+    <th >Роль</th>
+    </thead>
+    <tbody th:each="user : ${users}">
+        <td th:text="${user.getId()}"/>
+        <td th:text="${user.getName()}"/>
+        <td th:text="${user.getLogin()}"/>
+        <td th:text="${user.getEmail()}"/>
+        <td th:text="${user.getRole().name()}"/>
+</table>
+<br/>
+<form style="margin-left:70px" method="get" action="/user/admin/register">
+    <button type="submit">Зарегестрировать пользователя</button>
+</form>
+<form style="margin-left:70px" method="post" action="/user/admin/block">
+    <label for="block_id" >ID:</label>
+    <input type="text" id="block_id" name="block_id">
+    <button type="submit">Заблокировать пользователя</button>
+</form>
+<form style="margin-left:70px" method="post" action="/user/admin/unblock">
+    <label for="unblock_id" >ID:</label>
+    <input type="text" id="unblock_id" name="unblock_id">
+    <button type="submit">Разблокировать пользователя</button>
+</form>
+<form style="margin-left:70px" method="post" action="/user/admin/delete">
+    <label for="delete_id" >ID:</label>
+    <input type="text" id="delete_id" name="delete_id">
+    <button type="submit">Удалить пользователя</button>
+</form>
+
+<p>&nbsp; &nbsp;&nbsp;</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px">
+    <caption>Все услуги</caption>
+    <thead>
+    <th>ID</th>
+    <th>Название</th>
+    <th>Цена</th>
+    </thead>
+    <tbody th:each="service : ${services}">
+        <td th:text="${service.getId()}"/>
+        <td th:text="${service.getName()}"/>
+        <td th:text="${service.getPrice()}"/>
+</table>
+
+<p>&nbsp;</p>
+</body>
+</html>
