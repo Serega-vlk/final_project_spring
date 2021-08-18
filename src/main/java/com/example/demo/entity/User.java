@@ -9,7 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -41,17 +42,21 @@ public class User {
     private Role role;
     @Transient
     private String repeatPass;
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "user_service",
-//            joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "service_id")}
-//    )
-//    private List<Service> services;
+    @ManyToMany
+    @JoinTable(
+            name = "user_service",
+            inverseJoinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "service_id")
+    )
+    private Set<Service> services = new HashSet<>();
 
-//    public void addService(Service service){
-//        services.add(service);
-//    }
+    public boolean addService(Service service){
+        return services.add(service);
+    }
+
+    public boolean deleteService(Service service){
+        return services.remove(service);
+    }
 
     public User(String name, String email, String password, String login, int money){
         this.email = email;

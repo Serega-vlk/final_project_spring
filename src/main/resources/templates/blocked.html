@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Блокировка</title>
+    <a style="margin-left:50px" href="/user/logout">Выход</a>
+    <a style="margin-left:70px" href="/user/change">Сменить пароль</a>
+    <a style="margin-left:500px" href="/user/balance">Баланс</a>
+    <br/>
+    <a style="margin-left:800px" th:text="${user.getMoney()}">value</a>
 </head>
+<hr/>
 <body>
 <p style="text-align:center"><span style="font-size:26px"><span style="font-family:Comic Sans MS,cursive">Вы заблокированы</span></span></p>
 <a style="margin-left:500px" href="/user/balance">Пополнить баланс</a>

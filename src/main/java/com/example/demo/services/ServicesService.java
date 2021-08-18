@@ -1,13 +1,14 @@
 package com.example.demo.services;
 
+import com.example.demo.entity.Service;
 import com.example.demo.repositories.ServiceRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
-@Service
+@org.springframework.stereotype.Service
 public class ServicesService {
     private ServiceRepositories repository;
 
@@ -15,31 +16,39 @@ public class ServicesService {
     public ServicesService(ServiceRepositories repository){
         this.repository = repository;
     }
+    
+    public Service saveService(Service service){
+        return repository.save(service);
+    }
 
-    public List<com.example.demo.entity.Service> getALlServices(){
+    public List<Service> getALlServices(){
         return repository.findAll();
     }
 
-    public List<com.example.demo.entity.Service> getAllSortedByID(){
-        List<com.example.demo.entity.Service> services = repository.findAll();
+    public Optional<Service> getById(int id){
+        return repository.findById((long) id);
+    }
+
+    public List<Service> getAllSortedByID(){
+        List<Service> services = repository.findAll();
         services.sort((a, b) -> (int) (a.getId() - b.getId()));
         return services;
     }
 
-    public List<com.example.demo.entity.Service> getAllSortedByName(){
-        List<com.example.demo.entity.Service> services = repository.findAll();
-        services.sort(Comparator.comparing(com.example.demo.entity.Service::getName));
+    public List<Service> getAllSortedByName(){
+        List<Service> services = repository.findAll();
+        services.sort(Comparator.comparing(Service::getName));
         return services;
     }
 
-    public List<com.example.demo.entity.Service> getAllSortedByPrice(){
-        List<com.example.demo.entity.Service> services = repository.findAll();
-        services.sort(Comparator.comparingInt(com.example.demo.entity.Service::getPrice));
+    public List<Service> getAllSortedByPrice(){
+        List<Service> services = repository.findAll();
+        services.sort(Comparator.comparingInt(Service::getPrice));
         return services;
     }
 
-    public List<com.example.demo.entity.Service> getAllSorted(String sort){
-        List<com.example.demo.entity.Service> services;
+    public List<Service> getAllSorted(String sort){
+        List<Service> services;
         switch (sort){
             case "id":
                 services = getAllSortedByID();
@@ -54,5 +63,20 @@ public class ServicesService {
                 services = getALlServices();
         }
         return services;
+    }
+
+    public Service getCheapestService(){
+        List<Service> services = getALlServices();
+        return services.stream()
+                .min(Comparator.comparingInt(Service::getPrice))
+                .orElseThrow(RuntimeException::new);
+    }
+
+    public void deleteById(Long id){
+        repository.deleteById(id);
+    }
+    
+    public boolean hasService(Service service){
+        return repository.findByName(service.getName()).isPresent();
     }
 }

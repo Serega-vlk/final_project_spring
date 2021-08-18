@@ -24,12 +24,22 @@
 	<th>Название</th>
 	<th>Цена</th>
 	</thead>
-	<tbody >
-		<td text="Здесь">
-		<td text="Будут">
-		<td text="Услуги">
+	<tbody th:each="service : ${user.getServices()}">
+		<td th:text="${service.getId()}"/>
+		<td th:text="${service.getName()}"/>
+		<td th:text="${service.getPrice()}"/>
 	<tbody/>
 </table>
+<form method="post" action="/user/addService">
+	<label for="addServiceId">Id услуги:</label>
+	<input type="text" name="addServiceId" id="addServiceId">
+	<button type="submit">Добавить услугу</button>
+</form>
+<form method="post" action="/user/deleteService">
+	<label for="deleteServiceId">Id услуги:</label>
+	<input type="text" name="deleteServiceId" id="deleteServiceId">
+	<button type="submit">Удалить услугу</button>
+</form>
 
 <p>&nbsp; &nbsp;&nbsp;</p>
 

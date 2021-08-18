@@ -69,6 +69,14 @@
 <a style="margin-left:50px" href="/user/admin?sort=id">Id</a>
 <a style="margin-left:60px" href="/user/admin?sort=name">Название</a>
 <a style="margin-left:70px" href="/user/admin?sort=price">Цена</a>
+<form style="margin-left:70px" method="post" action="/user/admin/remove">
+    <label for="delete_service_id" >ID:</label>
+    <input type="text" id="delete_service_id" name="delete_service_id">
+    <button type="submit">Удалить услугу</button>
+</form>
+<form style="margin-left:70px" method="get" action="/user/admin/add">
+    <button type="submit">Добавить услугу</button>
+</form>
 
 <p>&nbsp;</p>
 </body>

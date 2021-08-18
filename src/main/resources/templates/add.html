@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Услуга</title>
+</head>
+<body>
+<form method="POST" action="/user/admin/add" th:object="${service}">
+    <label for="name">Введите название:</label>
+    <input name="name" th:field="*{name}" id="name">
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+    <br/>
+    <label for="price">Введите цену:</label>
+    <input name="price" th:field="*{price}" id="price">
+    <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Name Error</div>
+    <input type="submit" value="Добавить">
+</form>
+</body>
+</html>

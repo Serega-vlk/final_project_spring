@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.Role;
+import com.example.demo.entity.Service;
 import com.example.demo.entity.User;
 import com.example.demo.services.ServicesService;
 import com.example.demo.services.UserService;
@@ -73,7 +74,7 @@ public class AdminController {
 
     @PostMapping("/block")
     public String blockUser(@RequestParam(name = "block_id") String id){
-        userService.blockUserById(Integer.parseInt(id));
+        userService.blockUserById(Long.parseLong(id));
         return "redirect:/user/admin";
     }
 
@@ -86,6 +87,32 @@ public class AdminController {
     @PostMapping("/delete")
     public String delete(@RequestParam(name = "delete_id") String id){
         userService.deleteById(Integer.parseInt(id));
-        return  "redirect:/user/admin";
+        return "redirect:/user/admin";
+    }
+
+    @PostMapping("/remove")
+    public String remove(@RequestParam(name = "delete_service_id") String id){
+        servicesService.deleteById(Long.parseLong(id));
+        return "redirect:/user/admin";
+    }
+
+    @GetMapping("/add")
+    public String add(Model model){
+        Service service = new Service();
+        model.addAttribute("service", service);
+        return "add";
+    }
+
+    @PostMapping("/add")
+    public String newService(@ModelAttribute() @Valid Service service,
+                           BindingResult result){
+        if (servicesService.hasService(service)){
+            result.addError(new FieldError("service", "name", "такая услуга уже существует"));
+        }
+        if (result.hasErrors()){
+            return "add";
+        }
+        servicesService.saveService(service);
+        return "redirect:/user/admin";
     }
 }

@@ -43,8 +43,8 @@ public class UserService {
         return user.getPassword();
     }
 
-    public boolean isBlocked(String username){
-        return uRepo.findByLogin(username).orElseThrow(RuntimeException::new).getRole().equals(Role.BLOCKED);
+    public boolean isBlocked(User user){
+        return user.getRole().equals(Role.BLOCKED);
     }
 
     public User saveUser(User user){
@@ -52,8 +52,8 @@ public class UserService {
     }
 
     @Transactional
-    public User blockUserById(int id){
-        User user = uRepo.getById((long) id);
+    public User blockUserById(Long id){
+        User user = uRepo.getById(id);
         user.setRole(Role.BLOCKED);
         return uRepo.save(user);
     }
@@ -65,9 +65,8 @@ public class UserService {
         return uRepo.save(user);
     }
 
-    public boolean deleteById(int id){
+    public void deleteById(int id){
         uRepo.deleteById((long) id);
-        return true;
     }
 
     public boolean hasUsername(String username){
@@ -86,11 +85,33 @@ public class UserService {
         return uRepo.save(user);
     }
 
-    public User checkMoneyAndUnblockUserByUsername(String username, int minMoney){
+    public User unblockUserByUsername(String username){
         User user = getUserByUsername(username).orElseThrow(RuntimeException::new);
-        if (user.getMoney() >= minMoney){
-            user.setRole(Role.USER);
-        }
+        user.setRole(Role.USER);
         return uRepo.save(user);
+    }
+
+    @Transactional
+    public User addServiceByUsername(String username, com.example.demo.entity.Service service){
+        User user = uRepo.findByLogin(username).orElseThrow(RuntimeException::new);
+        payForService(user, service);
+        user.addService(service);
+        return uRepo.save(user);
+    }
+
+    public int payForService(User user, com.example.demo.entity.Service service){
+        user.setMoney(user.getMoney() - service.getPrice());
+        return user.getMoney();
+    }
+
+    @Transactional
+    public User deleteServiceByUsername(String username, com.example.demo.entity.Service service){
+        User user = uRepo.findByLogin(username).orElseThrow(RuntimeException::new);
+        user.deleteService(service);
+        return uRepo.save(user);
+    }
+
+    public boolean checkEnoughMoney(User user, com.example.demo.entity.Service service){
+        return user.getMoney() >= service.getPrice();
     }
 }

@@ -4,14 +4,11 @@ import com.example.demo.dto.MoneyDTO;
 import com.example.demo.dto.PasswordChangeDTO;
 import com.example.demo.entity.Service;
 import com.example.demo.entity.User;
-import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.ServicesService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -40,16 +36,43 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('READ', 'NON')")
     public String userPage(Model model, Principal principal,
                            @RequestParam(name = "sort", required = false) Optional<String> sort){
-        if (userService.isBlocked(principal.getName())){
+        User user = userService.getUserByUsername(principal.getName())
+                .orElseThrow(RuntimeException::new);
+        if (userService.isBlocked(user)){
             return "redirect:/blocked";
         }
-        User user = userService.getUserByUsername(principal.getName()).orElseThrow(RuntimeException::new);
         if (userService.isUserIsAdmin(user.getLogin())){
             return "redirect:/user/admin";
         }
         model.addAttribute("user", user);
         model.addAttribute("services", servicesService.getAllSorted(sort.orElse("default")));
         return "user";
+    }
+
+    @PostMapping("/addService")
+    @PreAuthorize("hasAnyAuthority('READ')")
+    public String addService(Principal principal,
+                             @RequestParam(name = "addServiceId") String id){
+        Service service = servicesService.getById(Integer.parseInt(id)).orElseThrow(RuntimeException::new);
+        User user = userService.getUserByUsername(principal.getName())
+                .orElseThrow(RuntimeException::new);
+        if (!userService.checkEnoughMoney(user, servicesService.getCheapestService())){
+            userService.blockUserById(user.getId());
+            return "redirect:/user/logout";
+        } else if (!userService.checkEnoughMoney(user, service)){
+            return "redirect:/user";
+        }
+        userService.addServiceByUsername(principal.getName(), service);
+        return "redirect:/user";
+    }
+
+    @PostMapping("/deleteService")
+    @PreAuthorize("hasAnyAuthority('READ')")
+    public String deleteService(Principal principal,
+                             @RequestParam(name = "deleteServiceId") String id){
+        userService.deleteServiceByUsername(principal.getName(), servicesService
+                .getById(Integer.parseInt(id)).orElseThrow(RuntimeException::new));
+        return "redirect:/user";
     }
 
     @PreAuthorize("hasAnyAuthority('READ', 'NON')")
@@ -67,25 +90,28 @@ public class UserController {
                            BindingResult result,
                            Model model,
                            Principal principal){
+        User user = userService.getUserByUsername(principal.getName()).orElseThrow(RuntimeException::new);
         if (result.hasErrors()){
-            User user = userService.getUserByUsername(principal.getName()).orElseThrow(RuntimeException::new);
             model.addAttribute("userMoney", user.getMoney().toString());
             return "balance";
         }
         userService.addMoneyByUsername(principal.getName(), money.getMoneyToAdd());
-        userService.checkMoneyAndUnblockUserByUsername(principal.getName(), 60);
+        if (userService.isBlocked(user) && userService.checkEnoughMoney(user, servicesService.getCheapestService())){
+            userService.unblockUserByUsername(principal.getName());
+            return "redirect:/user/logout";
+        }
         return "redirect:/user";
     }
 
     @GetMapping("/change")
-    @PreAuthorize("hasAnyAuthority('READ')")
+    @PreAuthorize("hasAnyAuthority('READ', 'NON')")
     public String changePasswordForm(Model model){
         model.addAttribute("passForm", new PasswordChangeDTO());
         return "changePassword";
     }
 
     @PostMapping("/change")
-    @PreAuthorize("hasAnyAuthority('READ')")
+    @PreAuthorize("hasAnyAuthority('READ', 'NON')")
     public String changePassword(@ModelAttribute(name = "passForm") @Valid PasswordChangeDTO passwordChangeDTO,
                                  BindingResult result,
                                  Principal principal,
