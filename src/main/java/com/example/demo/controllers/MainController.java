@@ -38,8 +38,7 @@ public class MainController {
     @GetMapping("/blocked")
     public String blocked(Principal principal,
                           Model model){
-        model.addAttribute("user", userService.getUserByUsername(principal.getName())
-                .orElseThrow(RuntimeException::new));
+        model.addAttribute("user", userService.getUserByUsername(principal.getName()));
         return "blocked";
     }
 }

@@ -45,8 +45,8 @@ public class User {
     @ManyToMany
     @JoinTable(
             name = "user_service",
-            inverseJoinColumns = @JoinColumn(name = "user_id"),
-            joinColumns = @JoinColumn(name = "service_id")
+            inverseJoinColumns = @JoinColumn(name = "service_id"),
+            joinColumns = @JoinColumn(name = "user_id")
     )
     private Set<Service> services = new HashSet<>();
 

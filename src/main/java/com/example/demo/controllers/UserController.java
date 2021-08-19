@@ -36,8 +36,7 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('READ', 'NON')")
     public String userPage(Model model, Principal principal,
                            @RequestParam(name = "sort", required = false) Optional<String> sort){
-        User user = userService.getUserByUsername(principal.getName())
-                .orElseThrow(RuntimeException::new);
+        User user = userService.getUserByUsername(principal.getName());
         if (userService.isBlocked(user)){
             return "redirect:/blocked";
         }
@@ -52,10 +51,9 @@ public class UserController {
     @PostMapping("/addService")
     @PreAuthorize("hasAnyAuthority('READ')")
     public String addService(Principal principal,
-                             @RequestParam(name = "addServiceId") String id){
-        Service service = servicesService.getById(Integer.parseInt(id)).orElseThrow(RuntimeException::new);
-        User user = userService.getUserByUsername(principal.getName())
-                .orElseThrow(RuntimeException::new);
+                             @RequestParam(name = "addServiceId") long id){
+        Service service = servicesService.getById(id).orElseThrow(RuntimeException::new);
+        User user = userService.getUserByUsername(principal.getName());
         if (!userService.checkEnoughMoney(user, servicesService.getCheapestService())){
             userService.blockUserById(user.getId());
             return "redirect:/user/logout";
@@ -69,16 +67,16 @@ public class UserController {
     @PostMapping("/deleteService")
     @PreAuthorize("hasAnyAuthority('READ')")
     public String deleteService(Principal principal,
-                             @RequestParam(name = "deleteServiceId") String id){
+                                @RequestParam(name = "deleteServiceId") long id){
         userService.deleteServiceByUsername(principal.getName(), servicesService
-                .getById(Integer.parseInt(id)).orElseThrow(RuntimeException::new));
+                .getById(id).orElseThrow(RuntimeException::new));
         return "redirect:/user";
     }
 
     @PreAuthorize("hasAnyAuthority('READ', 'NON')")
     @GetMapping("/balance")
     public String balance(Model model, Principal principal){
-        User user = userService.getUserByUsername(principal.getName()).orElseThrow(RuntimeException::new);
+        User user = userService.getUserByUsername(principal.getName());
         model.addAttribute("moneys", new MoneyDTO(0));
         model.addAttribute("userMoney", user.getMoney().toString());
         return "balance";
@@ -90,7 +88,7 @@ public class UserController {
                            BindingResult result,
                            Model model,
                            Principal principal){
-        User user = userService.getUserByUsername(principal.getName()).orElseThrow(RuntimeException::new);
+        User user = userService.getUserByUsername(principal.getName());
         if (result.hasErrors()){
             model.addAttribute("userMoney", user.getMoney().toString());
             return "balance";
@@ -123,8 +121,7 @@ public class UserController {
         if (encoder.matches(passwordChangeDTO.getOldPassword(), password)){
             userService.appdataPassword(principal.getName(), encoder.encode(passwordChangeDTO.getNewPassword()));
             return "redirect:/user";
-        }
-        else {
+        } else {
             result.addError(new FieldError("passForm", "oldPassword", "неверный страый пароль"));
             return "changePassword";
         }

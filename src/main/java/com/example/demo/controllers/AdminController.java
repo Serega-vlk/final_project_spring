@@ -34,7 +34,7 @@ public class AdminController {
     @GetMapping
     public String adminPage(Model model, Principal principal,
                             @RequestParam(name = "sort", required = false) Optional<String> sort){
-        User user = userService.getUserByUsername(principal.getName()).orElseThrow(RuntimeException::new);
+        User user = userService.getUserByUsername(principal.getName());
         model.addAttribute("username", user.getName());
         model.addAttribute("services", servicesService.getAllSorted(sort.orElse("default")));
         model.addAttribute("users", userService.getAllUsers());
@@ -73,26 +73,26 @@ public class AdminController {
     }
 
     @PostMapping("/block")
-    public String blockUser(@RequestParam(name = "block_id") String id){
-        userService.blockUserById(Long.parseLong(id));
+    public String blockUser(@RequestParam(name = "block_id") long id){
+        userService.blockUserById(id);
         return "redirect:/user/admin";
     }
 
     @PostMapping("/unblock")
-    public String unblockUser(@RequestParam(name = "unblock_id") String id){
-        userService.unblockUserById(Integer.parseInt(id));
+    public String unblockUser(@RequestParam(name = "unblock_id") long id){
+        userService.unblockUserById(id);
         return "redirect:/user/admin";
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam(name = "delete_id") String id){
-        userService.deleteById(Integer.parseInt(id));
+    public String delete(@RequestParam(name = "delete_id") long id){
+        userService.deleteById(id);
         return "redirect:/user/admin";
     }
 
     @PostMapping("/remove")
-    public String remove(@RequestParam(name = "delete_service_id") String id){
-        servicesService.deleteById(Long.parseLong(id));
+    public String remove(@RequestParam(name = "delete_service_id") long id){
+        servicesService.deleteById(id);
         return "redirect:/user/admin";
     }
 

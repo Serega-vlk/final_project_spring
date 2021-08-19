@@ -1,19 +1,16 @@
 package com.example.demo.services;
 
 import com.example.demo.entity.Service;
-import com.example.demo.repositories.ServiceRepositories;
+import com.example.demo.repositories.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-
+import java.util.*;
 @org.springframework.stereotype.Service
 public class ServicesService {
-    private ServiceRepositories repository;
+    private final ServiceRepository repository;
 
     @Autowired
-    public ServicesService(ServiceRepositories repository){
+    public ServicesService(ServiceRepository repository){
         this.repository = repository;
     }
     
@@ -25,8 +22,8 @@ public class ServicesService {
         return repository.findAll();
     }
 
-    public Optional<Service> getById(int id){
-        return repository.findById((long) id);
+    public Optional<Service> getById(Long id){
+        return repository.findById(id);
     }
 
     public List<Service> getAllSortedByID(){

@@ -1,16 +1,17 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.Role;
+import com.example.demo.entity.Service;
 import com.example.demo.entity.User;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@org.springframework.stereotype.Service
 public class UserService {
     private final UserRepository uRepo;
 
@@ -19,19 +20,19 @@ public class UserService {
         this.uRepo = uRepo;
     }
 
-    public Optional<User> getUserByUsername(String username){
-        return uRepo.findByLogin(username);
+    public User getUserByUsername(String username){
+        return uRepo.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException("Пользователь с таким логином не найден"));
     }
 
     @Transactional
     public User appdataPassword(String username, String newPassword){
-        User user = uRepo.findByLogin(username).orElseThrow(RuntimeException::new);
+        User user = getUserByUsername(username);
         user.setPassword(newPassword);
         return uRepo.save(user);
     }
 
     public boolean isUserIsAdmin(String username){
-        return uRepo.findByLogin(username).orElseThrow(RuntimeException::new).getRole().equals(Role.ADMIN);
+        return getUserByUsername(username).getRole().equals(Role.ADMIN);
     }
 
     public List<User> getAllUsers(){
@@ -39,7 +40,7 @@ public class UserService {
     }
 
     public String getUserPasswordByUsername(String username){
-        User user = getUserByUsername(username).orElseThrow(RuntimeException::new);
+        User user = getUserByUsername(username);
         return user.getPassword();
     }
 
@@ -59,14 +60,14 @@ public class UserService {
     }
 
     @Transactional
-    public User unblockUserById(int id){
-        User user = uRepo.getById((long) id);
+    public User unblockUserById(long id){
+        User user = uRepo.getById(id);
         user.setRole(Role.USER);
         return uRepo.save(user);
     }
 
-    public void deleteById(int id){
-        uRepo.deleteById((long) id);
+    public void deleteById(long id){
+        uRepo.deleteById(id);
     }
 
     public boolean hasUsername(String username){
@@ -79,39 +80,39 @@ public class UserService {
 
     @Transactional
     public User addMoneyByUsername(String username, int money){
-        User user = getUserByUsername(username).orElseThrow(RuntimeException::new);
+        User user = getUserByUsername(username);
         int userMoney = user.getMoney();
         user.setMoney(userMoney + money);
         return uRepo.save(user);
     }
 
     public User unblockUserByUsername(String username){
-        User user = getUserByUsername(username).orElseThrow(RuntimeException::new);
+        User user = getUserByUsername(username);
         user.setRole(Role.USER);
         return uRepo.save(user);
     }
 
     @Transactional
-    public User addServiceByUsername(String username, com.example.demo.entity.Service service){
-        User user = uRepo.findByLogin(username).orElseThrow(RuntimeException::new);
+    public User addServiceByUsername(String username, Service service){
+        User user = getUserByUsername(username);
         payForService(user, service);
         user.addService(service);
         return uRepo.save(user);
     }
 
-    public int payForService(User user, com.example.demo.entity.Service service){
+    public int payForService(User user, Service service){
         user.setMoney(user.getMoney() - service.getPrice());
         return user.getMoney();
     }
 
     @Transactional
-    public User deleteServiceByUsername(String username, com.example.demo.entity.Service service){
-        User user = uRepo.findByLogin(username).orElseThrow(RuntimeException::new);
+    public User deleteServiceByUsername(String username, Service service){
+        User user = getUserByUsername(username);
         user.deleteService(service);
         return uRepo.save(user);
     }
 
-    public boolean checkEnoughMoney(User user, com.example.demo.entity.Service service){
+    public boolean checkEnoughMoney(User user, Service service){
         return user.getMoney() >= service.getPrice();
     }
 }

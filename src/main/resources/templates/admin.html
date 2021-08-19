@@ -30,25 +30,25 @@
         <td th:text="${user.getLogin()}"/>
         <td th:text="${user.getEmail()}"/>
         <td th:text="${user.getRole().name()}"/>
+        <td>
+            <form method="post" action="/user/admin/block">
+                <input type="hidden" id="block_id" name="block_id" th:value="${user.getId()}">
+                <button type="submit">Заблокировать пользователя</button>
+            </form>
+        <td>
+            <form method="post" action="/user/admin/unblock">
+                <input type="hidden" id="unblock_id" name="unblock_id" th:value="${user.getId()}">
+                <button type="submit">Разблокировать пользователя</button>
+            </form>
+        <td>
+            <form method="post" action="/user/admin/delete">
+                <input type="hidden" id="delete_id" name="delete_id" th:value="${user.getId()}">
+                <button type="submit">Удалить пользователя</button>
+            </form>
 </table>
 <br/>
 <form style="margin-left:70px" method="get" action="/user/admin/register">
     <button type="submit">Зарегестрировать пользователя</button>
-</form>
-<form style="margin-left:70px" method="post" action="/user/admin/block">
-    <label for="block_id" >ID:</label>
-    <input type="text" id="block_id" name="block_id">
-    <button type="submit">Заблокировать пользователя</button>
-</form>
-<form style="margin-left:70px" method="post" action="/user/admin/unblock">
-    <label for="unblock_id" >ID:</label>
-    <input type="text" id="unblock_id" name="unblock_id">
-    <button type="submit">Разблокировать пользователя</button>
-</form>
-<form style="margin-left:70px" method="post" action="/user/admin/delete">
-    <label for="delete_id" >ID:</label>
-    <input type="text" id="delete_id" name="delete_id">
-    <button type="submit">Удалить пользователя</button>
 </form>
 
 <p>&nbsp; &nbsp;&nbsp;</p>
@@ -64,16 +64,16 @@
         <td th:text="${service.getId()}"/>
         <td th:text="${service.getName()}"/>
         <td th:text="${service.getPrice()}"/>
+        <td>
+            <form method="post" action="/user/admin/remove">
+                <input type="hidden" id="delete_service_id" name="delete_service_id" th:value="${service.getId()}">
+                <button type="submit">Удалить услугу</button>
+            </form>
 </table>
 <a>Сортировка по:</a>
 <a style="margin-left:50px" href="/user/admin?sort=id">Id</a>
 <a style="margin-left:60px" href="/user/admin?sort=name">Название</a>
 <a style="margin-left:70px" href="/user/admin?sort=price">Цена</a>
-<form style="margin-left:70px" method="post" action="/user/admin/remove">
-    <label for="delete_service_id" >ID:</label>
-    <input type="text" id="delete_service_id" name="delete_service_id">
-    <button type="submit">Удалить услугу</button>
-</form>
 <form style="margin-left:70px" method="get" action="/user/admin/add">
     <button type="submit">Добавить услугу</button>
 </form>

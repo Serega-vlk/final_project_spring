@@ -28,18 +28,13 @@
 		<td th:text="${service.getId()}"/>
 		<td th:text="${service.getName()}"/>
 		<td th:text="${service.getPrice()}"/>
+		<td>
+			<form method="post" action="/user/deleteService">
+				<input type="hidden" name="deleteServiceId" id="deleteServiceId" th:value="${service.getId()}"/>
+				<input value="Удалить услугу" type="submit"/>
+			</form>
 	<tbody/>
 </table>
-<form method="post" action="/user/addService">
-	<label for="addServiceId">Id услуги:</label>
-	<input type="text" name="addServiceId" id="addServiceId">
-	<button type="submit">Добавить услугу</button>
-</form>
-<form method="post" action="/user/deleteService">
-	<label for="deleteServiceId">Id услуги:</label>
-	<input type="text" name="deleteServiceId" id="deleteServiceId">
-	<button type="submit">Удалить услугу</button>
-</form>
 
 <p>&nbsp; &nbsp;&nbsp;</p>
 
@@ -54,6 +49,11 @@
 		<td th:text="${service.getId()}"/>
 		<td th:text="${service.getName()}"/>
 		<td th:text="${service.getPrice()}"/>
+		<td>
+			<form method="post" action="/user/addService">
+				<input type="hidden" name="addServiceId" id="addServiceId" th:value="${service.getId()}"/>
+				<input value="Добавить услугу" type="submit" />
+			</form>
 	<tbody/>
 </table>
 <a>Сортировка по:</a>
