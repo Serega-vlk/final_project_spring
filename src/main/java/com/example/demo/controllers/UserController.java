@@ -44,7 +44,10 @@ public class UserController {
             return "redirect:/user/admin";
         }
         model.addAttribute("user", user);
-        model.addAttribute("services", servicesService.getAllSorted(sort.orElse("default")));
+        model.addAttribute("services", servicesService.getServicesWithOutUser(
+                servicesService.getAllSorted(sort.orElse("default")),
+                user
+        ));
         return "user";
     }
 
@@ -103,8 +106,10 @@ public class UserController {
 
     @GetMapping("/change")
     @PreAuthorize("hasAnyAuthority('READ', 'NON')")
-    public String changePasswordForm(Model model){
+    public String changePasswordForm(Model model,
+                                     Principal principal){
         model.addAttribute("passForm", new PasswordChangeDTO());
+        model.addAttribute("user", userService.getUserByUsername(principal.getName()));
         return "changePassword";
     }
 

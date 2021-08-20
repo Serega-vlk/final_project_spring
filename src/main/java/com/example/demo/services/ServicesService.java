@@ -1,10 +1,13 @@
 package com.example.demo.services;
 
 import com.example.demo.entity.Service;
+import com.example.demo.entity.User;
 import com.example.demo.repositories.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 @org.springframework.stereotype.Service
 public class ServicesService {
     private final ServiceRepository repository;
@@ -75,5 +78,12 @@ public class ServicesService {
     
     public boolean hasService(Service service){
         return repository.findByName(service.getName()).isPresent();
+    }
+
+    public List<Service> getServicesWithOutUser(List<Service> services, User user){
+        return services
+                .stream()
+                .filter(accept -> !user.getServices().contains(accept))
+                .collect(Collectors.toList());
     }
 }
