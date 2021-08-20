@@ -1,4 +1,4 @@
-package com.example.demo.exeptions;
+package com.example.demo.exceptions;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

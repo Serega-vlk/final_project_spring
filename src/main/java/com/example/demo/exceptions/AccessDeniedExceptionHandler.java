@@ -1,4 +1,4 @@
-package com.example.demo.exeptions;
+package com.example.demo.exceptions;
 
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
