@@ -6,18 +6,20 @@ import com.example.demo.entity.User;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @org.springframework.stereotype.Service
 public class UserService {
     private final UserRepository uRepo;
+    private final BCryptPasswordEncoder encoder;
 
     @Autowired
-    public UserService(UserRepository uRepo){
+    public UserService(UserRepository uRepo, BCryptPasswordEncoder encoder){
         this.uRepo = uRepo;
+        this.encoder = encoder;
     }
 
     public User getUserByUsername(String username){
@@ -49,6 +51,9 @@ public class UserService {
     }
 
     public User saveUser(User user){
+        user.setRole(Role.USER);
+        user.setPassword(encoder.encode(user.getPassword()));
+        user.setMoney(0);
         return uRepo.save(user);
     }
 

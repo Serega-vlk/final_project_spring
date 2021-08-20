@@ -1,16 +1,29 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Пользователь</title>
-	<a style="margin-left:50px" href="/user/logout">Выход</a>
-	<a style="margin-left:70px" href="/user/change">Сменить пароль</a>
-	<a style="margin-left:500px" href="/user/balance">Баланс</a>
-	<br/>
-	<a style="margin-left:800px" th:text="${user.getMoney()}">value</a>
+	<title>[[#{user.title}]]</title>
+	<div class="container">
+		<a href="/user/logout">
+			<button style="margin-left:120px" type="submit" >[[#{exit}]]</button>
+		</a>
+		<a href="/user/change">
+			<button style="margin-left:1px" type="submit" >[[#{change}]]</button>
+		</a>
+		<a href="/user/balance">
+			<button style="margin-left:1px" type="submit" >[[#{balance}]]</button>
+		</a>
+		<a style="margin-left:1px" th:text="${user.getMoney()}">value</a>
+		<a th:href="@{?lang=en}">
+			<button style="margin-left:10px" type="submit">EN</button>
+		</a>
+		<a th:href="@{?lang=uk}">
+			<button style="margin-left:1px" type="submit">UK</button>
+		</a>
+	</div>
 </head>
 <body>
 <hr />
-<a><span style="font-family:Comic Sans MS,cursive" >Здраствуйте, </span></a>
+<a><span style="font-family:Comic Sans MS,cursive" >[[#{user.hello}]], </span></a>
 <a><span style="font-family:Comic Sans MS,cursive" th:text="${user.getName()}">text</span></a>
 
 <br/>
@@ -18,11 +31,11 @@
 <br/>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width:500px">
-	<caption>Подключенные услуги</caption>
+	<caption>[[#{user.connectedServices}]]</caption>
 	<thead>
 	<th>ID</th>
-	<th>Название</th>
-	<th>Цена</th>
+	<th>[[#{user.name}]]</th>
+	<th>[[#{user.price}]]</th>
 	</thead>
 	<tbody th:each="service : ${user.getServices()}">
 		<td th:text="${service.getId()}"/>
@@ -31,7 +44,7 @@
 		<td>
 			<form method="post" action="/user/deleteService">
 				<input type="hidden" name="deleteServiceId" id="deleteServiceId" th:value="${service.getId()}"/>
-				<input value="Удалить услугу" type="submit"/>
+				<button type="submit">[[#{user.deleteService}]]</button>
 			</form>
 	<tbody/>
 </table>
@@ -39,11 +52,11 @@
 <p>&nbsp; &nbsp;&nbsp;</p>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width:500px">
-	<caption>Доступные услуги</caption>
+	<caption>[[#{user.services}]]</caption>
 	<thead>
 	<th>ID</th>
-	<th>Название</th>
-	<th>Цена</th>
+	<th>[[#{user.name}]]</th>
+	<th>[[#{user.price}]]</th>
 	</thead>
 	<tbody th:each="service : ${services}">
 		<td th:text="${service.getId()}"/>
@@ -52,14 +65,14 @@
 		<td>
 			<form method="post" action="/user/addService">
 				<input type="hidden" name="addServiceId" id="addServiceId" th:value="${service.getId()}"/>
-				<input value="Добавить услугу" type="submit" />
+				<button type="submit">[[#{user.addService}]]</button>
 			</form>
 	<tbody/>
 </table>
-<a>Сортировка по:</a>
+<a>[[#{user.sort}]]:</a>
 <a style="margin-left:50px" href="/user?sort=id">Id</a>
-<a style="margin-left:60px" href="/user?sort=name">Название</a>
-<a style="margin-left:70px" href="/user?sort=price">Цена</a>
+<a style="margin-left:60px" href="/user?sort=name">[[#{user.name}]]</a>
+<a style="margin-left:70px" href="/user?sort=price">[[#{user.price}]]</a>
 
 <p>&nbsp;</p>
 </body>

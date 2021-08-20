@@ -2,20 +2,34 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Баланс</title>
-    <a style="margin-left:50px" href="/user/logout">Выход</a>
-    <a style="margin-left:70px" href="/user/change">Сменить пароль</a>
-    <a style="margin-left:500px" href="/user">Личный кабинет</a>
+    <title>[[#{balance.title}]]</title>
+    <div class="container">
+        <a href="/user/logout">
+            <button style="margin-left:120px" type="submit" >[[#{exit}]]</button>
+        </a>
+        <a href="/user/change">
+            <button style="margin-left:120px" type="submit" >[[#{change}]]</button>
+        </a>
+        <a href="/user">
+            <button style="margin-left:120px" type="submit" >[[#{profile}]]</button>
+        </a>
+        <a th:href="@{?lang=en}">
+            <button style="margin-left:20px" type="submit">EN</button>
+        </a>
+        <a th:href="@{?lang=uk}">
+            <button style="margin-left:1px" type="submit">UK</button>
+        </a>
+    </div>
 </head>
 <body>
 <hr/>
-<p style="text-align:center"><span style="font-size:26px"><span style="font-family:Comic Sans MS,cursive">Ваш баланс: </span></span></p>
+<p style="text-align:center"><span style="font-size:26px"><span style="font-family:Comic Sans MS,cursive">[[#{balance.yourBalance}]]: </span></span></p>
 <p style="text-align:center"><span style="font-size:26px"><span style="font-family:Comic Sans MS,cursive" th:text="${userMoney}">value</span></span></p>
 <form style="text-align:center" method="post" action="/user/balance" th:object="${moneys}">
-    <label for="moneyToAdd">Пополнить на:</label>
+    <label for="moneyToAdd">[[#{balance.toAdd}]]:</label>
     <input type="text" name="moneyToAdd" th:field="*{moneyToAdd}" id="moneyToAdd">
     <div style="color:red" th:if="${#fields.hasErrors('moneyToAdd')}" th:errors="*{moneyToAdd}">Name Error</div>
-    <input type="submit" value="Пополнить">
+    <button type="submit">[[#{balance.enter}]]</button>
 </form>
 </body>
 </html>

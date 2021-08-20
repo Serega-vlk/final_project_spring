@@ -51,8 +51,7 @@ public class AdminController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute() @Valid User user,
-                      BindingResult result,
-                      @Autowired BCryptPasswordEncoder encoder){
+                      BindingResult result){
         if (!user.getRepeatPass().equals(user.getPassword())){
             result.addError(new FieldError("user", "repeatPass", "Пароли должны совпадать"));
         }
@@ -65,9 +64,6 @@ public class AdminController {
         if (result.hasErrors()){
             return "reg";
         }
-        user.setRole(Role.USER);
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setMoney(0);
         userService.saveUser(user);
         return "redirect:/user/admin";
     }

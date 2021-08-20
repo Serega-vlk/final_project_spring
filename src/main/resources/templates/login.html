@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Аундефикация</title>
+    <title>[[#{login.title}]]</title>
 </head>
 <body>
 <br/>
 <br/>
 <form style="text-align:center" th:method="POST" action="/login">
-    <div><label> Логин: <input type="text" name="username" id="username"/> </label></div>
-    <div><label> Пароль: <input type="password" name="password" id="password"/> </label></div>
-    <div><input type="submit" value="Вход"/></div>
+    <div><label> [[#{login.login}]]: <input type="text" name="username" id="username"/> </label></div>
+    <div><label> [[#{login.password}]]: <input type="password" name="password" id="password"/> </label></div>
+    <div><button type="submit">[[#{login.enter}]]</button></div>
 </form>
 </body>
 </html>

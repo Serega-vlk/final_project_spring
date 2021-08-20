@@ -1,22 +1,30 @@
 ﻿<!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
-	<title>Интернет провайдер</title>
-	<form style="margin-left:120px" method="get" action="/user">
-		<button type="submit">Личный кабинет</button>
-	</form>
+	<title>[[#{main.title}]]</title>
+	<div class="container">
+		<a href="/user">
+			<button style="margin-left:120px" type="submit" >[[#{profile}]]</button>
+		</a>
+		<a th:href="@{?lang=en}">
+			<button style="margin-left:20px" type="submit">EN</button>
+		</a>
+		<a th:href="@{?lang=uk}">
+			<button style="margin-left:1px" type="submit">UK</button>
+		</a>
+	</div>
 </head>
 <body>
 <hr/>
 
-<p style="text-align:center"><span style="font-size:26px"><span style="font-family:Comic Sans MS,cursive">Интернет провайдер</span></span></p>
+<p style="text-align:center"><span style="font-size:26px"><span style="font-family:Comic Sans MS,cursive">[[#{main.title}]]</span></span></p>
 
 <hr />
 <p style="margin-left:120px">&nbsp;</p>
 
 <p style="margin-left:120px">&nbsp;</p>
 
-<p style="margin-left:120px">Для подключения обращяйтесь последующим контактам:</p>
+<p style="margin-left:120px">[[#{main.connection}]]:</p>
 
 <p style="margin-left:160px">+380503994939</p>
 

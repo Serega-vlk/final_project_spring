@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Админ</title>
-    <a style="margin-left:50px" href="/user/logout">Выход</a>
-    <a style="margin-left:70px" href="/user/change">Сменить пароль</a>
+    <title>[[#{admin.title}]]</title>
+    <div class="container">
+        <a href="/user/logout">
+            <button style="margin-left:120px" type="submit" >[[#{exit}]]</button>
+        </a>
+        <a href="/user/change">
+            <button style="margin-left:120px" type="submit" >[[#{change}]]</button>
+        </a>
+        <a th:href="@{?lang=en}">
+            <button style="margin-left:20px" type="submit">EN</button>
+        </a>
+        <a th:href="@{?lang=uk}">
+            <button style="margin-left:1px" type="submit">UK</button>
+        </a>
+    </div>
 </head>
 <body>
 <hr />
-<a><span style="font-family:Comic Sans MS,cursive" >Здраствуйте, </span></a>
+<a><span style="font-family:Comic Sans MS,cursive" >[[#{user.hello}]], </span></a>
 <a><span style="font-family:Comic Sans MS,cursive" th:text="${username}">text</span></a>
-<a><span style="font-family:Comic Sans MS,cursive" > (Админ)</span></a>
+<a><span style="font-family:Comic Sans MS,cursive" > ([[#{admin.admin}]])</span></a>
 
 <br/>
 <br/>
@@ -19,10 +31,10 @@
     <caption>Все пользователи</caption>
     <thead>
     <th >ID</th>
-    <th >Имя</th>
-    <th >Логин</th>
-    <th >Email</th>
-    <th >Роль</th>
+    <th >[[#{admin.name}]]</th>
+    <th >[[#{admin.login}]]</th>
+    <th >[[#{admin.email}]]</th>
+    <th >[[#{admin.role}]]</th>
     </thead>
     <tbody th:each="user : ${users}">
         <td th:text="${user.getId()}"/>
@@ -33,32 +45,32 @@
         <td>
             <form method="post" action="/user/admin/block">
                 <input type="hidden" id="block_id" name="block_id" th:value="${user.getId()}">
-                <button type="submit">Заблокировать пользователя</button>
+                <button type="submit">[[#{admin.blockUser}]]</button>
             </form>
         <td>
             <form method="post" action="/user/admin/unblock">
                 <input type="hidden" id="unblock_id" name="unblock_id" th:value="${user.getId()}">
-                <button type="submit">Разблокировать пользователя</button>
+                <button type="submit">[[#{admin.unblockUser}]]</button>
             </form>
         <td>
             <form method="post" action="/user/admin/delete">
                 <input type="hidden" id="delete_id" name="delete_id" th:value="${user.getId()}">
-                <button type="submit">Удалить пользователя</button>
+                <button type="submit">[[#{admin.deleteUser}]]</button>
             </form>
 </table>
 <br/>
 <form style="margin-left:70px" method="get" action="/user/admin/register">
-    <button type="submit">Зарегестрировать пользователя</button>
+    <button type="submit">[[#{admin.userReg}]]</button>
 </form>
 
 <p>&nbsp; &nbsp;&nbsp;</p>
 
 <table border="1" cellpadding="1" cellspacing="1" style="width:500px">
-    <caption>Все услуги</caption>
+    <caption>[[#{admin.services}]]</caption>
     <thead>
     <th>ID</th>
-    <th>Название</th>
-    <th>Цена</th>
+    <th>[[#{user.name}]]</th>
+    <th>[[#{user.price}]]</th>
     </thead>
     <tbody th:each="service : ${services}">
         <td th:text="${service.getId()}"/>
@@ -67,15 +79,15 @@
         <td>
             <form method="post" action="/user/admin/remove">
                 <input type="hidden" id="delete_service_id" name="delete_service_id" th:value="${service.getId()}">
-                <button type="submit">Удалить услугу</button>
+                <button type="submit">[[#{admin.deleteService}]]</button>
             </form>
 </table>
-<a>Сортировка по:</a>
+<a>[[#{user.sort}]]:</a>
 <a style="margin-left:50px" href="/user/admin?sort=id">Id</a>
-<a style="margin-left:60px" href="/user/admin?sort=name">Название</a>
-<a style="margin-left:70px" href="/user/admin?sort=price">Цена</a>
+<a style="margin-left:60px" href="/user/admin?sort=name">[[#{user.name}]]</a>
+<a style="margin-left:70px" href="/user/admin?sort=price">[[#{user.price}]]</a>
 <form style="margin-left:70px" method="get" action="/user/admin/add">
-    <button type="submit">Добавить услугу</button>
+    <button type="submit">[[#{admin.addService}]]</button>
 </form>
 
 <p>&nbsp;</p>
