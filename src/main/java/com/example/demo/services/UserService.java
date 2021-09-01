@@ -42,8 +42,7 @@ public class UserService {
     }
 
     public String getUserPasswordByUsername(String username){
-        User user = getUserByUsername(username);
-        return user.getPassword();
+        return getUserByUsername(username).getPassword();
     }
 
     public boolean isBlocked(User user){

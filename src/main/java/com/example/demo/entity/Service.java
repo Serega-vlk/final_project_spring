@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,8 +19,10 @@ public class Service {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+    @NotEmpty(message = "имя не указано")
     private String name;
     @Min(value = 0, message = "цена не может быть отрицательной")
+    @NotNull(message = "цена не указана")
     private Integer price;
     @ManyToMany
     @JoinTable(
@@ -27,6 +31,11 @@ public class Service {
             joinColumns = @JoinColumn(name = "service_id")
     )
     private Set<User> users = new HashSet<>();
+
+    public Service(String name, int price){
+        this.name = name;
+        this.price = price;
+    }
 
     public void addUser(User user){
         users.add(user);
