@@ -3,23 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>[[#{balance.title}]]</title>
-    <div class="container">
-        <a href="/user/logout">
-            <button style="margin-left:120px" type="submit" >[[#{exit}]]</button>
-        </a>
-        <a href="/user/change">
-            <button style="margin-left:120px" type="submit" >[[#{change}]]</button>
-        </a>
-        <a href="/user">
-            <button style="margin-left:120px" type="submit" >[[#{profile}]]</button>
-        </a>
-        <a th:href="@{?lang=en}">
-            <button style="margin-left:20px" type="submit">EN</button>
-        </a>
-        <a th:href="@{?lang=uk}">
-            <button style="margin-left:1px" type="submit">UK</button>
-        </a>
-    </div>
+    <a href="/user/logout">
+        <button style="margin-left:120px" type="submit" >[[#{exit}]]</button>
+    </a>
+    <a href="/user/change">
+        <button style="margin-left:120px" type="submit" >[[#{change}]]</button>
+    </a>
+    <a href="/user">
+        <button style="margin-left:120px" type="submit" >[[#{profile}]]</button>
+    </a>
+    <a th:href="@{?lang=en}">
+        <button style="margin-left:20px" type="submit">EN</button>
+    </a>
+    <a th:href="@{?lang=uk}">
+        <button style="margin-left:1px" type="submit">UK</button>
+    </a>
 </head>
 <body>
 <hr/>
