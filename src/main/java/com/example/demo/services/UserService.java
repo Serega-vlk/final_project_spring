@@ -59,14 +59,18 @@ public class UserService {
     @Transactional
     public User blockUserById(Long id){
         User user = uRepo.getById(id);
-        user.setRole(Role.BLOCKED);
+        if (user.getRole() != Role.ADMIN) {
+            user.setRole(Role.BLOCKED);
+        }
         return uRepo.save(user);
     }
 
     @Transactional
     public User unblockUserById(long id){
         User user = uRepo.getById(id);
-        user.setRole(Role.USER);
+        if (user.getRole() != Role.ADMIN) {
+            user.setRole(Role.USER);
+        }
         return uRepo.save(user);
     }
 
@@ -92,7 +96,9 @@ public class UserService {
 
     public User unblockUserByUsername(String username){
         User user = getUserByUsername(username);
-        user.setRole(Role.USER);
+        if (user.getRole() != Role.ADMIN) {
+            user.setRole(Role.USER);
+        }
         return uRepo.save(user);
     }
 
