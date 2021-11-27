@@ -22,18 +22,18 @@ public class DownloadController {
 
     private static final String DEFAULT_FILE_NAME = "D:\\proga\\проэкты java\\final_project_spring\\src\\main\\resources\\static\\tarifs.txt";
 
-    private ServletContext servletContext;
+    private MediaTypeConfig mediaTypeConfig;
 
     @Autowired
-    public DownloadController(ServletContext servletContext) {
-        this.servletContext = servletContext;
+    public DownloadController(MediaTypeConfig mediaTypeConfig) {
+        this.mediaTypeConfig = mediaTypeConfig;
     }
 
     @GetMapping("/user/download")
     @PreAuthorize("hasAnyAuthority('READ')")
     public ResponseEntity<InputStreamResource> downloadFile() throws IOException {
 
-        MediaType mediaType = MediaTypeConfig.getMediaTypeForFileName(this.servletContext, DEFAULT_FILE_NAME);
+        MediaType mediaType = mediaTypeConfig.getMediaTypeForFileName(DEFAULT_FILE_NAME);
         File file = new File(DEFAULT_FILE_NAME);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
