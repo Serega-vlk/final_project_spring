@@ -4,6 +4,7 @@ package com.example.demo.entity;
 import com.example.demo.dto.Role;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = {"login", "email"}))
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = {"login", "email"}))
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
