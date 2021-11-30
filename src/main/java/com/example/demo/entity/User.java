@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = {"login", "email"}))
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -27,11 +27,11 @@ public class User {
     @Column(nullable = false)
     private String name;
     @Email(message = "невалидный email")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotEmpty(message = "email не может быть пустым")
     private String email;
     @NotEmpty(message = "логин не может быть пустым")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
     @Min(value = 0)
     private Integer money;
